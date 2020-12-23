@@ -11,6 +11,8 @@ import Address from "./address";
 import XGridDemo from "./transactions";
 import Summary from "./summary";
 import Bird from "./../bird_logo.png";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles((theme) => ({
   typography: {
@@ -81,64 +83,6 @@ function Copyright() {
         </Link>
       </Typography>
       <div>
-
-        {/* <ul class="nav justify-content-center">
-          <li class="nav-item mr-2">
-            <a
-              class="nav-link btn-outline-primary"
-              target="_blank"
-              href="https://twitter.com/_birdmoney">
-              <i
-                class="fab fa-twitter"
-                style="font-size: 5vh;"
-                aria-hidden="true"
-              ></i>
-            </a>
-          </li>
-
-          <li class="nav-item mr-2">
-            <a
-              class="nav-link btn-outline-dark"
-              target="_blank"
-              href="https://discord.gg/Z2BeCnS"
-            >
-              <i
-                class="fab fa-discord"
-                style="font-size: 5vh;"
-                aria-hidden="true"
-              ></i>
-            </a>
-          </li>
-
-          <li class="nav-item mr-2">
-            <a
-              class="nav-link btn-outline-dark"
-              target="_blank"
-              href="https://medium.com/bird-money"
-            >
-              <i
-                class="fab fa-medium"
-                style="font-size: 5vh;"
-                aria-hidden="true"
-              ></i>
-            </a>
-          </li>
-
-          <li class="nav-item mr-2">
-            <a
-              class="nav-link btn-outline-danger"
-              target="_blank"
-              alt="Contract"
-              href="https://etherscan.io/address/0x70401dFD142A16dC7031c56E862Fc88Cb9537Ce0#code"
-            >
-              <i
-                class="far fa-file-code	"
-                style="font-size: 5vh;"
-                aria-hidden="true"
-              ></i>
-            </a>
-          </li>
-        </ul> */}
       </div>
     </div>
   );
@@ -200,7 +144,7 @@ const Main = (props) => {
       .then((res) => res.json())
       .then(
         (result) => {
-          const balance = (result[0].eth_balance).toFixed(4)
+          const balance = (result.eth_balance).toFixed(4)
           setEthBalance(balance);
         },
         (error) => {

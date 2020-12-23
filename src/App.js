@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Web3Provider} from "@ethersproject/providers";
+import { Web3Provider } from "@ethersproject/providers";
 import { useQuery } from "@apollo/react-hooks";
 import Web3 from "web3";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
-import { Button, Header} from "./components";
+import { Button, Header } from "./components";
 import { initWeb3, web3Modal, logoutOfWeb3Modal } from "./utils/web3Modal";
 
 import GET_TRANSFERS from "./graphql/subgraph";
 import Main from "./components/main";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
 
 const theme = createMuiTheme({
   typography: {
@@ -73,9 +77,7 @@ function App() {
     }
   }, [loading, error, data, provider]);
 
-
   const init = async () => {
-
     let web3;
     try {
       web3 = await initWeb3();
@@ -92,28 +94,47 @@ function App() {
   };
 
   return (
-      <ThemeProvider theme={theme}>
-        <Header>
-          {/* <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} /> */}
-        </Header>
-          <div>
-            <div>
-              <div className="bird-container bird-container--one">
-                <div className="bird bird--one"></div>
-              </div>
-              <div className="bird-container bird-container--two">
-                <div className="bird bird--two"></div>
-              </div>
-              <div className="bird-container bird-container--three">
-                <div className="bird bird--three"></div>
-              </div>
-              <div className="bird-container bird-container--four">
-                <div className="bird bird--four"></div>
-              </div>
-            </div>
+    <ThemeProvider theme={theme}>
+      <Header>
+        <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} />
+      </Header>
+      <div>
+        <div>
+          <div className="bird-container bird-container--one">
+            <div className="bird bird--one"></div>
           </div>
+          <div className="bird-container bird-container--two">
+            <div className="bird bird--two"></div>
+          </div>
+          <div className="bird-container bird-container--three">
+            <div className="bird bird--three"></div>
+          </div>
+          <div className="bird-container bird-container--four">
+            <div className="bird bird--four"></div>
+          </div>
+        </div>
+      </div>
+      
+      {
+        account ? (
           <Main account={account}></Main>
-      </ThemeProvider>
+        ) : (
+          
+          // <Typography
+          //   component="h1"
+          //   variant="h5"
+          //   color="textSecondary"
+          //   align="center"
+          // >
+          //   Please connect to metamask
+          // </Typography>
+          <CircularProgress />
+
+        ) // or whatever loading state you want, could be null
+      }
+
+
+    </ThemeProvider>
   );
 }
 
