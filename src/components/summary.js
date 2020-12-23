@@ -12,6 +12,10 @@ import ImageIcon from "@material-ui/icons/Image";
 import WorkIcon from "@material-ui/icons/Work";
 import Divider from "@material-ui/core/Divider";
 import GaugeRate from "./shared/rating";
+import Assets from "./shared/assets";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Box from "@material-ui/core/Box";
+import { Button, Header } from "./../components";
 
 import { scaleLinear } from "d3-scale";
 import TreeMap from "./shared/treemap";
@@ -57,7 +61,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.getContrastText(yellow[500]),
     backgroundColor: yellow[500],
   },
+  center: {
+    textAlign: "center",
+  },
 }));
+
 
 const DATE_OPTIONS = {
   weekday: "short",
@@ -65,6 +73,43 @@ const DATE_OPTIONS = {
   month: "short",
   day: "numeric",
 };
+
+
+// make on-chain request function to Oracle
+function OnChainButton({ provider, loadWeb3Modal }) {
+  return (
+    <Button
+      onClick={() => {
+
+        console.log("Save User Rating to On-Chain Oracle")
+
+        // if (!provider) {
+        //   loadWeb3Modal();
+        // } else {
+        //   logoutOfWeb3Modal();
+        // }
+
+      }}
+    >
+      {!provider ? "Request Onchain Rating" : "Update Onchain Rating"}
+    </Button>
+  );
+}
+
+
+function UpdateButton({ provider, loadWeb3Modal }) {
+  return (
+    <Button
+      onClick={() => {
+
+        console.log("Request Asset Update")
+      }}
+    >
+      {!provider ? "Request Asset Update" : "Update Assets"}
+    </Button>
+  );
+}
+
 
 const scoreScale = scaleLinear().domain([0, 100]).range([0, 10]);
 
@@ -86,157 +131,136 @@ const Summary = (props) => {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <Paper className={classes.paper}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Typography component="h1" variant="h5">
+                  Bird Rating
+                </Typography>
+                <GaugeRate score={bird_rating}></GaugeRate>
+              </Grid>
 
-            <Typography component="h1" variant="h5">
-              My Bird Rating is : {bird_rating.toFixed(2)}
-            </Typography>
+              <Grid item xs={4}>
 
-            <GaugeRate score={bird_rating}></GaugeRate>
+                <Box position="relative" display="inline-flex">
+                  <CircularProgress
+                    variant="determinate"
+                    value={transCount > 50 ? 75 : 25}
+                  />
+                  <Box
+                    top={0}
+                    left={0}
+                    bottom={0}
+                    right={0}
+                    position="absolute"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      color="textSecondary"
+                    >
+                      {transCount > 50 ? "A" : "B"}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography variant="subtitle1">Payment History</Typography>
+                
+              </Grid>
 
-            <Typography component="h1" variant="h5">
-              For a chance to claim free $BIRD <br />
-            </Typography>
-            <Typography>
-              Follow{" "}
-              <a rel="noopener noreferrer" target="_blank" href="https://twitter.com/_birdmoney">
-                Bird.Money
-              </a> on twitter, join the  <a rel="noopener noreferrer" target="_blank" href="https://discord.com/invite/Z2BeCnS">discord</a>
-            </Typography>
+              <Grid item xs={4}>
 
+                                
+              <Box position="relative" display="inline-flex">
+                  <CircularProgress
+                    variant="determinate"
+                    value={credit_age > 500 ? 75 : 35}
+                  />
+                  <Box
+                    top={0}
+                    left={0}
+                    bottom={0}
+                    right={0}
+                    position="absolute"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      color="textSecondary"
+                    >
+                      {credit_age > 500 ? "A" : "B"}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography variant="subtitle1">Debt History</Typography>
+
+              </Grid>
+              
+              <Grid item xs={4}>
+
+                                
+              <Box position="relative" display="inline-flex">
+                  <CircularProgress
+                    variant="determinate"
+                    value={credit_age > 500 ? 75 : 25}
+                  />
+                  <Box
+                    top={0}
+                    left={0}
+                    bottom={0}
+                    right={0}
+                    position="absolute"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography
+                      variant="caption"
+                      component="div"
+                      color="textSecondary"
+                    >
+                      {credit_age > 500 ? "A" : "B"}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Typography variant="subtitle1">Credit Age</Typography>
+
+              </Grid>
+              
+              <Grid container item xs={12} justify="center" alignItems="center">
+                <OnChainButton></OnChainButton>
+              </Grid>
+
+            </Grid>
+          
           </Paper>
         </Grid>
+
         <Grid item xs={12} sm={6}>
-          <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <List className={classes.root}>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <ImageIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={balance} secondary="ETH Balance" />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar>
-                    <WorkIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={transCount}
-                  secondary="Transaction Count"
-                />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-              <ListItem>
-                <ListItemText
-                  primary="First Transaction"
-                  secondary={start.toLocaleDateString("en-US", DATE_OPTIONS)}
-                />
-                <ListItemText
-                  primary="Last Transaction"
-                  secondary={end.toLocaleDateString("en-US", DATE_OPTIONS)}
-                />
-              </ListItem>
-            </List>
-          </Paper>
-          </Grid>
-          <Grid item xs={12}>
-          <Paper className={classes.paper, classes.rating}>
-            <List className={classes.root}>
-              <ListItem>
-                <ListItemText primary="Payment History" />
-                <ListItemAvatar>
-                  <Avatar
-                    className={transCount > 50 ? classes.green : classes.orange}
-                  >
-                    {transCount > 50 ? "A" : "B"}
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-              <Divider component="li" />
-              <ListItem>
-                <ListItemText primary="Debt History" />
-                <ListItemAvatar>
-                  <Avatar
-                    className={
-                      credit_age > 500 ? classes.green : classes.orange
-                    }
-                  >
-                    {credit_age > 500 ? "A" : "B"}
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-              <Divider component="li" />
-              <ListItem>
-                <ListItemText primary="Credit Age" />
-                <ListItemAvatar>
-                  <Avatar
-                    className={
-                      credit_age > 500 ? classes.green : classes.orange
-                    }
-                  >
-                    {credit_age > 500 ? "A" : "B"}
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-            </List>
-          </Paper>
-          </Grid>
 
-        </Grid>
-        <Grid hidden item xs={12} sm={6}>
-          <Paper className={classes.paper}>
-            <List className={classes.root}>
-              <ListItem>
-                <ListItemText primary="Payment History" />
-                <ListItemAvatar>
-                  <Avatar
-                    className={transCount > 50 ? classes.green : classes.orange}
-                  >
-                    {transCount > 50 ? "A" : "B"}
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-              <Divider component="li" />
-              <ListItem>
-                <ListItemText primary="Debt History" />
-                <ListItemAvatar>
-                  <Avatar
-                    className={
-                      credit_age > 500 ? classes.green : classes.orange
-                    }
-                  >
-                    {credit_age > 500 ? "A" : "B"}
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-              <Divider component="li" />
-              <ListItem>
-                <ListItemText primary="Credit Age" />
-                <ListItemAvatar>
-                  <Avatar
-                    className={
-                      credit_age > 500 ? classes.green : classes.orange
-                    }
-                  >
-                    {credit_age > 500 ? "A" : "B"}
-                  </Avatar>
-                </ListItemAvatar>
-              </ListItem>
-            </List>
+          <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Typography component="h1" variant="h5">
+                  Assets
+                </Typography>
+                <Assets></Assets>
+              </Grid>
+
+              <Grid container item xs={12} justify="center" alignItems="center">
+                <UpdateButton></UpdateButton>
+              </Grid>
+
+            </Grid>
+
+          
           </Paper>
         </Grid>
-        <Grid item xs={12}>
-          <Paper className={classes.paper}>
-            <Typography component="h1">
-              External Oracle Data (only for demo)
-            </Typography>
-            <TreeMap></TreeMap>
-          </Paper>
-        </Grid>
+      
       </Grid>
     </div>
   );

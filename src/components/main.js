@@ -11,8 +11,7 @@ import Address from "./address";
 import XGridDemo from "./transactions";
 import Summary from "./summary";
 import Bird from "./../bird_logo.png";
-import CircularProgress from '@material-ui/core/CircularProgress';
-
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
   typography: {
@@ -52,10 +51,21 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  marginTop: {
+    marginTop: theme.spacing(8),
+  },
+  nodes:{
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
+    padding: theme.spacing(6),
+    textAlign: "center"
+  },
+  noPadding:{
+    padding: theme.spacing(0),
+  }
 }));
 
 function Copyright() {
-
   return (
     <div>
       <Typography variant="body1" color="textPrimary" align="center">
@@ -72,18 +82,27 @@ function Copyright() {
         {"."}
         <br />
         Follow us on &nbsp;
-        <Link color="error" target="_blank" href="https://twitter.com/_birdmoney" >
-          Twitter 
-        </Link> |
-        <Link color="error" target="_blank" href="https://discord.gg/Z2BeCnS" >
-        &nbsp;Discord
-        </Link> |
-        <Link color="error" target="_blank" href="https://medium.com/bird-money" >
-        &nbsp;Medium
+        <Link
+          color="error"
+          target="_blank"
+          href="https://twitter.com/_birdmoney"
+        >
+          Twitter
+        </Link>{" "}
+        |
+        <Link color="error" target="_blank" href="https://discord.gg/Z2BeCnS">
+          &nbsp;Discord
+        </Link>{" "}
+        |
+        <Link
+          color="error"
+          target="_blank"
+          href="https://medium.com/bird-money"
+        >
+          &nbsp;Medium
         </Link>
       </Typography>
-      <div>
-      </div>
+      <div></div>
     </div>
   );
 }
@@ -144,7 +163,7 @@ const Main = (props) => {
       .then((res) => res.json())
       .then(
         (result) => {
-          const balance = (result.eth_balance).toFixed(4)
+          const balance = result.eth_balance.toFixed(4);
           setEthBalance(balance);
         },
         (error) => {
@@ -156,22 +175,6 @@ const Main = (props) => {
 
   return (
     <Container className={classes.root}>
-      <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar} src={Bird}></Avatar>
-          <Typography component="h1" variant="h5">
-            Bird Analytics
-          </Typography>
-          <Address
-            valueOfUserInput={valueOfUserInput}
-            onUserSubmit={handleSubmit}
-            onUserInputChange={handleUserInputChange}
-            style={classes}
-          ></Address>
-        </div>
-      </Container>
-
       {
         Ethersdata.length > 1 && EthBalance ? (
           <Summary data={Ethersdata} balance={EthBalance}></Summary>
@@ -179,22 +182,76 @@ const Main = (props) => {
           <div>{error}</div>
         ) // or whatever loading state you want, could be null
       }
-      <Paper>
-        {/* <Typography component="h1" variant="h5">
-            Equities (ICO), Liquidity (ETH), Fixed Income (Bank Statement), 
-      </Typography> */}
-        {/* <TreeMap></TreeMap> */}
-      </Paper>
-      <Paper className={classes.paper}>
-        {
-          Ethersdata.length > 1 ? (
-            <XGridDemo data={Ethersdata} style={classes}></XGridDemo>
-          ) : (
-            // <LoadingSpinner />
-            <div>{error}</div>
-          ) // or whatever loading state you want, could be null
-        }
-      </Paper>
+
+      <Container className={ classes.noPadding}>
+
+        <Grid className={classes.marginTop}>
+          <Grid item xs={12}>
+            <Typography component="h1" variant="h4">
+              Off-Chain Oracles
+            </Typography>
+          </Grid>
+
+          <Grid container spacing={3}>
+
+            <Grid item xs>
+              <Paper className={classes.paper, classes.nodes}>
+
+                <Typography variant="h4" >
+                  Node 1
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Status: <span >Active</span>
+                </Typography>
+                <Typography variant="caption" display="block" gutterBottom >
+                  Address
+                  <br />
+                  {'0x0B6A33CfbbA02159E0D87086094609C867F04E42'}
+                </Typography>
+
+              </Paper>
+            </Grid>
+            
+            <Grid item xs>
+              <Paper className={classes.paper, classes.nodes}>
+
+                <Typography variant="h4" >
+                  Node 2
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Status: <span>Active</span>
+                </Typography>
+                <Typography variant="caption" display="block" gutterBottom >
+                  Address
+                  <br />
+                  {'0x0B6A33CfbbA02159E0D87086094609C867F04E42'}
+                </Typography>
+
+              </Paper>
+            </Grid>
+            
+            <Grid item xs>
+              <Paper className={classes.paper, classes.nodes}>
+
+                <Typography variant="h4" >
+                  Node 3
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  Status: <span>Active</span>
+                </Typography>
+                <Typography variant="caption" display="block" gutterBottom >
+                  Address
+                  <br />
+                  {'0x4eC9763c0322147d8119cD8517A6f0E42EEaf540'}
+                </Typography>
+
+              </Paper>
+            </Grid>
+            
+          </Grid>
+        
+        </Grid>
+      </Container>
 
       <Box mt={8}>
         <Copyright />
