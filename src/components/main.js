@@ -188,7 +188,7 @@ const Main = (props) => {
         <Grid className={classes.marginTop}>
           <Grid item xs={12}>
             <Typography component="h1" variant="h4">
-              Off-Chain Oracles
+              Off-Chain Oracle Nodes
             </Typography>
           </Grid>
 
