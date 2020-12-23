@@ -197,15 +197,15 @@ function App() {
               account ? (
                 <Main account={account}></Main>
               ) : (
-                // <Typography
-                //   component="h1"
-                //   variant="h5"
-                //   color="textSecondary"
-                //   align="center"
-                // >
-                //   Please connect to metamask
-                // </Typography>
-                <CircularProgress />
+                <Typography
+                  component="h1"
+                  variant="h5"
+                  color="textSecondary"
+                  align="center"
+                >
+                  <CircularProgress />
+                  Please connect to metamask
+                </Typography>
               ) // or whatever loading state you want, could be null
             }
           </Grid>
