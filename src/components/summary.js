@@ -74,7 +74,6 @@ const DATE_OPTIONS = {
   day: "numeric",
 };
 
-
 // make on-chain request function to Oracle
 function OnChainButton({ provider, loadWeb3Modal }) {
   return (

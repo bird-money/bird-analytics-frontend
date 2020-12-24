@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Web3Provider } from "@ethersproject/providers";
+import { Web3Provider, getDefaultProvider } from "@ethersproject/providers";
+import { Contract } from "@ethersproject/contracts";
 import { useQuery } from "@apollo/react-hooks";
 import Web3 from "web3";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
+
 import { Button, Header } from "./components";
 import { initWeb3, web3Modal, logoutOfWeb3Modal } from "./utils/web3Modal";
-
 import GET_TRANSFERS from "./graphql/subgraph";
+import { addresses, abis } from "./contracts";
+
 import Main from "./components/main";
 
 import { makeStyles } from "@material-ui/core/styles";
-
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Paper from "@material-ui/core/Paper";
@@ -61,6 +63,32 @@ const theme = createMuiTheme({
     ].join(","),
   },
 });
+
+async function readOnChainData(account) {
+  // Should replace with the end-user wallet, e.g. Metamask
+  const defaultProvider = getDefaultProvider("ropsten");
+  // const web3Provider = Web3Provider()
+  // Create an instance of an ethers.js Contract
+  // Read more about ethers.js on https://docs.ethers.io/v5/api/contract/contract/
+
+  // https://github.com/ethers-io/ethers.js/issues/657
+
+  const birdContract = new Contract(
+    addresses.birdErc20,
+    abis.bird,
+    defaultProvider
+  );
+
+  const tokenBalance = await birdContract.balanceOf(
+    account
+  );
+
+  console.log({ tokenBalance: tokenBalance.toString() });
+
+}
+
+
+
 
 function WalletButton({ provider, loadWeb3Modal }) {
   return (
@@ -132,7 +160,6 @@ function App() {
     <ThemeProvider theme={theme}>
       <div className={classes.root}>
         <Grid container spacing={3}>
-
           <Grid item xs={12} sm={2}>
             <Paper className={(classes.paper, classes.sidebar)}>
               <List component="nav" aria-label="sidebar">
@@ -172,6 +199,11 @@ function App() {
             <Container className={classes.root, classes.marginTop}>
             <Grid container>
               <Grid item xs={10}>
+
+              <Button  onClick={() => readOnChainData(account)}>
+                Read On-Chain BIRD Balance
+              </Button>
+
                 <Typography component="h1" variant="h5">
                   Oracle Analytics
                 </Typography>
