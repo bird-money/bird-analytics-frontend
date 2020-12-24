@@ -1,1 +1,3 @@
 git push -f heroku Oracle:master
+
+git push https://birdcarer@github.com/bird-money/bird-analytics-frontend.git
