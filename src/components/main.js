@@ -113,12 +113,13 @@ const Main = (props) => {
 
   const [valueOfUserInput, setUserChange] = useState("");
   const [Ethersdata, setEtherdata] = useState("");
+  const [birdData, setBirddata] = useState("");
   const [EthBalance, setEthBalance] = useState("");
   const [error, setError] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    loadEtherscan(valueOfUserInput);
+    // loadEtherscan(valueOfUserInput);
     EtherBalance(valueOfUserInput);
   };
 
@@ -132,7 +133,7 @@ const Main = (props) => {
   }, []);
 
   const loadDefault = async () => {
-    loadEtherscan(account);
+    // loadEtherscan(account);
     EtherBalance(account);
   };
 
@@ -141,21 +142,22 @@ const Main = (props) => {
   };
 
   // TODO: load data through bird api as oppose to therscan api
-  function loadEtherscan(address) {
-    const etherApi = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${process.env.REACT_APP_ETHERSCAN_API}`;
-    fetch(etherApi)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          const data = result.result;
-          setEtherdata(data);
-        },
-        (error) => {
-          console.log(error);
-          setError(error);
-        }
-      );
-  }
+  // function loadEtherscan(address) {
+  //   const etherApi = `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${process.env.REACT_APP_ETHERSCAN_API}`;
+  //   fetch(etherApi)
+  //     .then((res) => res.json())
+  //     .then(
+  //       (result) => {
+  //         const data = result.result;
+  //         // console.log(data)
+  //         setEtherdata(data);
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //         setError(error);
+  //       }
+  //     );
+  // }
 
   function EtherBalance(address) {
     const birdApi = `https://www.bird.money/analytics/address/${address}`;
@@ -163,6 +165,7 @@ const Main = (props) => {
       .then((res) => res.json())
       .then(
         (result) => {
+          setBirddata(result)
           const balance = result.eth_balance.toFixed(4);
           setEthBalance(balance);
         },
@@ -176,10 +179,11 @@ const Main = (props) => {
   return (
     <Container className={classes.root}>
       {
-        Ethersdata.length > 1 && EthBalance ? (
-          <Summary data={Ethersdata} balance={EthBalance}></Summary>
+        birdData ? (
+          <Summary bird={birdData}></Summary>
         ) : (
           <div>{error}</div>
+          // <div>No Transaction History</div>
         ) // or whatever loading state you want, could be null
       }
 

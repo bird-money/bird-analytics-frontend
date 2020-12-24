@@ -114,16 +114,25 @@ const scoreScale = scaleLinear().domain([0, 100]).range([0, 10]);
 
 const Summary = (props) => {
   const classes = useStyles();
-  const balance = props.balance;
-  const transCount = props.data.length;
-  const start = new Date(+props.data[0].timeStamp * 1000);
-  const end = new Date(+props.data[transCount - 1].timeStamp * 1000);
 
-  const credit_age = Math.round(Math.abs(+start - +end) / 8.64e7);
+  // console.log(props.bird)
 
-  const rating = (transCount + credit_age + Math.floor(balance) * 10) / 100;
+  // const balance = props.balance;
+  // const balance = +props.bird.eth_balance;
 
-  const bird_rating = scoreScale(rating);
+  // const transCount = props.data.length;
+  const transCount = +props.bird.nbr_transaction_count;
+
+  // const start = new Date(+props.data[0].timeStamp * 1000);
+  // const end = new Date(+props.data[transCount - 1].timeStamp * 1000);
+
+  // const credit_age = Math.round(Math.abs(+start - +end) / 8.64e7);
+  const credit_age = +props.bird.nbr_account_age_days;
+
+  // const rating = (transCount + credit_age + Math.floor(balance) * 10) / 100;
+
+  // const bird_rating = scoreScale(rating);
+  const bird_rating = +props.bird.bird_rating;
 
   return (
     <div className={classes.root}>
@@ -143,7 +152,7 @@ const Summary = (props) => {
                 <Box position="relative" display="inline-flex">
                   <CircularProgress
                     variant="determinate"
-                    value={transCount > 50 ? 75 : 25}
+                    value={transCount < 1 ? 5 : 10 || transCount > 50 ? 75 : 25}
                   />
                   <Box
                     top={0}
@@ -160,7 +169,7 @@ const Summary = (props) => {
                       component="div"
                       color="textSecondary"
                     >
-                      {transCount > 50 ? "A" : "B"}
+                      {transCount < 1 ? "C" : "C" || transCount > 50 ? "A" : "B"}
                     </Typography>
                   </Box>
                 </Box>
@@ -174,7 +183,7 @@ const Summary = (props) => {
               <Box position="relative" display="inline-flex">
                   <CircularProgress
                     variant="determinate"
-                    value={credit_age > 500 ? 75 : 35}
+                    value={ credit_age < 1 ? 5 : 10 || credit_age > 500 ? 75 : 35}
                   />
                   <Box
                     top={0}
@@ -191,7 +200,7 @@ const Summary = (props) => {
                       component="div"
                       color="textSecondary"
                     >
-                      {credit_age > 500 ? "A" : "B"}
+                      {credit_age < 1 ? "C" : "C" || credit_age > 500 ? "A" : "B"}
                     </Typography>
                   </Box>
                 </Box>
@@ -205,7 +214,7 @@ const Summary = (props) => {
               <Box position="relative" display="inline-flex">
                   <CircularProgress
                     variant="determinate"
-                    value={credit_age > 500 ? 75 : 25}
+                    value={credit_age < 1 ? 5 : 10 || credit_age > 500 ? 75 : 25}
                   />
                   <Box
                     top={0}
@@ -222,7 +231,7 @@ const Summary = (props) => {
                       component="div"
                       color="textSecondary"
                     >
-                      {credit_age > 500 ? "A" : "B"}
+                      {credit_age < 1 ? "C" : "C" || credit_age > 500 ? "A" : "B"}
                     </Typography>
                   </Box>
                 </Box>

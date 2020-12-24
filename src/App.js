@@ -200,9 +200,9 @@ function App() {
             <Grid container>
               <Grid item xs={10}>
 
-              <Button  onClick={() => readOnChainData(account)}>
+              {/* <Button  onClick={() => readOnChainData(account)}>
                 Read On-Chain BIRD Balance
-              </Button>
+              </Button> */}
 
                 <Typography component="h1" variant="h5">
                   Oracle Analytics
